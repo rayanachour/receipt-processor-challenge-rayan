@@ -1,18 +1,25 @@
-## Running the project
+                                                Receipt Processor API
+A lightweight API service built in Go for processing receipts. This application accepts receipt data, calculates reward points, and returns a unique identifier for each processed receipt. You can retrieve the points associated with each receipt using its ID.
 
-1. [Install Go](https://go.dev/doc/install)
-2. Run `go run main.go` in the root directory of the project
-3. The server will start on `http://localhost:8080`. You should see output indicating the server has started.
-
-## API Endpoints
-
-### 1. Process Receipts
-
-- **URL**: `POST /receipts/process`
-- **Description**: Accepts a receipt JSON payload, calculates points, and returns a unique receipt ID.
-- **Request Example**:
-
-    ```json
+Table of Contents
+    Running the Project
+    API Endpoints
+    Process Receipt
+    Get Points
+    Testing with Postman
+    Example Usage
+    Notes
+Running the Project
+    Install Go: Ensure Go is installed. If not, install Go.
+    Start the Server:
+    go run main.go
+    This will start the server at http://localhost:8080, with output confirming the server is running.
+    API Endpoints
+1. Process Receipt
+    URL: POST /receipts/process
+    Description: Accepts a receipt in JSON format, calculates the reward points based on items and other criteria, and returns a unique ID for the receipt.
+    Request Example:
+    json
     {
       "retailer": "Target",
       "purchaseDate": "2022-01-01",
@@ -29,45 +36,34 @@
       ],
       "total": "35.35"
     }
-    ```
-
-- **Response Example**:
-
-    ```json
+    Response Example:
+    json
     {
       "id": "unique-receipt-id"
     }
-    ```
-
-### 2. Get Points
-
-- **URL**: `GET /receipts/{id}/points`
-- **Description**: Retrieves the points for a given receipt ID.
-- **Response Example**:
-
-    ```json
+2. Get Points
+    URL: GET /receipts/{id}/points
+    Description: Retrieves the calculated points for a specific receipt based on its ID.
+    Response Example:
+    json
     {
       "points": 20
     }
-    ```
+Testing with Postman
+    Process a Receipt:
 
-## Testing with Postman
+    Method: POST
+        *URL: http://localhost:8080/receipts/process
+        *Body: JSON (use the example provided above).
+        *Get Points:
 
-1. **Process a Receipt**:
-   - **Method**: `POST`
-   - **URL**: `http://localhost:8080/receipts/process`
-   - **Body**: JSON (example provided above).
-
-2. **Get Points**:
-   - **Method**: `GET`
-   - **URL**: `http://localhost:8080/receipts/{id}/points`
-   - Replace `{id}` with the ID received from the previous step.
-
-## Example Usage
-
-1. Submit a receipt via `POST /receipts/process` and note the ID returned.
-2. Use the returned ID in a `GET /receipts/{id}/points` request to retrieve the points for that receipt.
-
-## Notes
-
-- **In-Memory Storage**: All data is stored in memory, meaning data will be lost if the server is restarted.
+    Method: GET
+        *URL: http://localhost:8080/receipts/{id}/points
+        *Replace {id} with the receipt ID received from the Process Receipt endpoint.
+Example Usage
+    Submit a Receipt:
+        *Send a POST request to /receipts/process with the receipt JSON data to get a unique receipt ID.
+    Retrieve Points:
+        *Use the ID from the previous response to send a GET request to /receipts/{id}/points to retrieve the associated points.
+Notes
+Data Persistence: This application uses in-memory storage, so all data is lost when the server is restarted. This setup is ideal for testing and development purposes but may need persistent storage for production environments.
